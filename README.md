@@ -1,70 +1,65 @@
-# Getting Started with Create React App
+## Frameworks and Libraries Used: 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+1. React.js         (https://reactjs.org/)
+2. Node.js          (https://nodejs.org/en/)
+3. Express.js      (https://expressjs.com/)
+4. Bootstrap4      (https://getbootstrap.com/ )
+5. React-router-dom (https://v5.reactrouter.com/web/guides/quick-start)
+6. Twilio Node helper library
 
-## Available Scripts
+## API used to implement OTP sending functionality:
+    Twilio API (https://www.twilio.com/docs)
 
-In the project directory, you can run:
 
-### `npm start`
+## React Components:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+ Navbar - Navigation component comprising of 2 tabs namely, Contact and Sent, displaying a list of contacts and sent messages respectively.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+ Contacts - Component made of several ContactsItem components.
 
-### `npm test`
+ ContactsItem - A card component with props:- name and phone number of a contact. On Clicking the component, the ContactState (global state using Context API) is changed to the passed name and phone number props as well as endpoint ‘/info’ is hit to display information of the contact. useContext() hook is used to avoid prop drilling.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+ Info - (‘/info endpoint) A card component displaying the image, name, and phone number of the selected contact. The selected contact is identified using ContactContext.  The card also has the button ‘Send Message’, on clicking it a random 6 digit OTP is generated and the ContactState ‘otp’ is changed to the generated number and the ‘/message’ endpoint is hit.
 
-### `npm run build`
+Message - (‘/message endpoint) A card displaying a message having OTP and a button ‘Send OTP’ to send the OTP to the phone number of the contact. On clicking the button sendOTP() function is called. This function updates the SentState and calls the API by making a POST  request to our server ‘https://mycontactsproject.herokuapp.com/api/messages’ by passing the message and the phone number of the contact as headers. Error handling from the server has been taken care of.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Sent - A table component having 3 columns namely, name, time, and otp. The rows in the table are populated by looping through the SentState.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+## Contexts Created:
+   
+ContactContext - A context to the ContactState comprising of name, phone, and otp.
+SentContext - A context to the SentState comprising of name, time, and otpSent.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Routing is used to implement the single-page application framework. The routes are as follows:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+‘/’ - Displays a list of contacts by rendering the Contact component along with Navbar. Navbar is fixed and the contents of the body change by switching between various components.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+‘/info’ - Renders Info component to show info of the selected contact.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+‘/sent’ - Renders Sent component to show a table of Sent messages in decreasing order of time.
 
-## Learn More
+‘/message’ - Renders Message Component to display OTP.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Server structure:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+When a POST request is made to ‘https://mycontactsproject.herokuapp.com/api/messages’, Twilio API is called up to create the messages and error handling has been taken care of.
+The server is deployed on Heroku.
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## GOOD PRACTICES: 
+1. Used environment variables to secure the credentials.
+2. Implemented single-page application framework.
+3. Used comments for internal documentation.
+4. Written clean code and used Prettier Document Formatter.
+5. Maintained a good project structure.
+6. Deployed frontend over Netlify and server on Heroku.
+7. Built a responsive website.
+8. Error handling at all the suspicious parts of the code has been taken care of.
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Other References used:
+1. For getting the fake contacts:- https://github.com/wellingtoncosta/fake-contacts-json
+2. YouTube
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
